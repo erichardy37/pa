@@ -1,0 +1,232 @@
+pelicanblog.txt
+12/26/2015
+
+This file will document the setup of a blog using the Pelican framework with github, hosted at pythonanywhere.com.
+
+
+Other documents related to setting up a blog (github, etc.) in July can be found here:
+/Users/erichardy/Dropbox/misc/economics.txt
+Pelican blog on pythonanywhere.com
+http://www.lesinskis.com/pelican_on_pythonanywhere.html
+
+
+##########
+Things to host on the blog
+1.  Tutorials
+	a.  Stata
+	b.  blog setup/git/etc
+	c.  de-Chrome a Chromebook
+	d.  
+2.  What makes a good paper?
+	a.  Review (?) well known papers, asking which qualities made them good papers
+3.  Find the research frontier
+	a.  
+4.  Links to other economic resources
+
+##########
+# Step 1: Create blog folder and contents on computer
+
+# cd to the directory holding all files to be synched with pythonanywhere.com
+cd ~/web/pa/
+
+# make a directory to hold the pelican blog files
+mkdir pblog
+
+# to remove a directory and its contents: rm -rf pblog
+
+
+
+# create a virtual environment
+# to remove a virtual environment, remove the folder containing it: rm -rf venv
+mkdir pvenv
+virtualenv -p /usr/local/bin/python3 pvenv
+
+# enter virtual environment
+# to exit the virtual environment: deactivate
+source pvenv/bin/activate
+
+# following the instructions on pelican getting started:
+# http://docs.getpelican.com/en/3.3.0/getting_started.html#file-metadata
+# install pelican; on 12/26/2015 MarkupSafe failed to build a wheel: http://pythonwheels.com/
+pip3 install pelican
+pip3 install Markdown typogrify
+
+# save installed packages list for future replication of the environment
+pip3 freeze > requirements.txt
+
+# pelican blog quickstart
+pelican-quickstart
+
+# responses can be changed in pelicanconf.py
+where do you want to create your new website? [.] pblog
+What will be the title of this web site? Done Is Better Than Perfect
+Who will be the author of this web site? Eric Hardy 
+What will be the default language of this web site? [en] en
+Do you want to specify a URL prefix? e.g., http://example.com (Y/n) n
+Do you want to enable article pagination? (Y/n) n
+What is your time zone? [Europe/Paris] America/New_York
+Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) y
+Do you want an auto-reload & simpleHTTP script to assist with theme and site development? (Y/n) n
+Do you want to upload your website using FTP? (y/N) n
+Do you want to upload your website using SSH? (y/N) n
+Do you want to upload your website using Dropbox? (y/N) n
+Do you want to upload your website using S3? (y/N) n
+Do you want to upload your website using Rackspace Cloud Files? (y/N) n
+Do you want to upload your website using GitHub Pages? (y/N) n 
+Done.  Your new project is available at /Users/erichardy/web/pa/pblog
+
+# begin putting content in the blog
+cd content
+vim post_dummy_122615.md
+vim post_dummy2_122615.md
+
+# folder to put pages that are not posts, including "about.md" or "contact.md"
+mkdir pages
+cd pages
+vim about.md
+
+# Compile markdown into .html files, which are stored in the "output" folder
+# the "pelican" command will create an "output" folder in the directory from which it is run.
+# direct pelican to use the settings in pelicanconf.py
+cd ~/web/pa/pblog
+pelican content -s pelicanconf.py
+
+# run blog, accessible on http://localhost:8000/
+cd output
+python3 -m pelican.server 
+# to stop running the blog: control-c
+
+
+# to view index.html in the browser, navigate to
+# file:///Users/erichardy/web/pa/pblog/output/index.html
+
+# find a list of pelican plugins here
+# https://github.com/getpelican/pelican-plugins
+
+
+##########
+# Step 2: Use git to pull blog contents onto pythonanywhere server
+
+# following steps outlined here:
+# http://kbroman.org/github_tutorial/pages/why.html
+# http://gitimmersion.com/lab_01.html
+# Note: the steps involve "fabric": pip3 install fabric, which I don't have
+
+# github.com; erichardy37; syncstuff1
+# to learn about github, follow this tutorial:
+# https://guides.github.com/activities/hello-world/
+
+
+# A.  Upload blog contents from computer to github
+# B.  download blog contents from github to pythonanywhere
+# C.  point the "web" 
+
+A.
+cd ~/web/pa/
+# initialize new git repository?
+git init
+# returns: "Initialized empty Git repository in /Users/erichardy/web/pa/.git/"
+git commit -m "First Commit, loosely following tutorial at http://gitimmersion.com/lab_03.html"
+# returns: Untracked files: .pelicanblog.txt; pblog/; pvenv;
+# returns: nothing added to commit but untracked files present
+# try this again:
+# somehow, "git add pvenv/" returns:
+# fatal: CRLF would be replaced by LF in pvenv/lib/python3.5/site-packages/Jinja2-2.8.dist-info/RECORD.
+# try this instead:
+git add pblog pelicanblog.txt
+git commit -m "First Commit (retry)"
+
+# use github's UI to create a new repo "pa" with no readme or .gitignore (yet)
+# push the existing repository onto github:
+git remote add origin git@github.com:erichardy37/pa
+git push -u origin master
+# Permission denied (publickey).
+# fatal: Could not read from remote repository
+# Please make sure you have the correct access rights
+
+# change ssh to url access: https://help.github.com/articles/changing-a-remote-s-url/
+# changes entry in .git/config file
+git remote set-url origin https://github.com/erichardy37/pa.git
+
+git push -u origin master
+
+# now everything is in the "pa" repository on github.
+
+# from pythonanywhere:, create a "pa" folder containing the pa repository
+cd ~/
+git clone http://github.com/erichardy37/pa.git
+
+
+# Notes:
+The theme used in the July pelican blog was current-theme/elegant
+I used to have the peewee orm as a repository on github "peewee"
+
+
+
+# on pythonanywhere.com, recreate virtual environment
+
+# create a virtual environment
+# to remove a virtual environment, remove the folder containing it: rm -rf venv
+ mkdir pvenv
+virtualenv -p /usr/local/bin/python3 pvenv
+ 
+# enter virtual environment
+# to exit the virtual environment: deactivate
+source pvenv/bin/activate
+
+pip3 install pelican
+pip3 install Markdown typogrify
+
+
+# Pelican Themes
+# back on the computer
+cd ~/web/pa
+mkdir pthemes
+cd pblog
+mkdir current-theme
+cp -R ~/web/pa/pthemes/elegant ~/web/pa/pblog/current-theme/
+# make blog again
+cd ~/web/pa/pblog
+pelican content -s pelicanconf.py
+
+# push themes to the server
+//cd ~/web/pa
+git add pblog pelicanblog.txt
+git commit -m "Second Commit: attempt to use the Elegant theme"
+git push -u origin master
+
+if:
+fatal: CRLF would be replaced by LF in pblog/current-theme/elegant/templates/search.html
+git config —-global core.autocrlf false
+git config —-global core.safecrlf false
+
+
+# on pythonanywhere.com
+
+# added 07/21/2016
+cd pa
+git pull
+
+
+
+
+
+# for future reference:
+# how to add google+ comments to any website
+http://browsingthenet.blogspot.com/2013/04/google-plus-comments-on-any-website.html
+# google plus comments plugin for pelican
+http://zonca.github.io/2013/09/google-plus-comments-plugin-for-pelican.html
+
+# isso comments
+# comments for a static website with isso
+https://tobrunet.ch/articles/comments-for-a-static-website-with-isso/
+# serving static content (and comments!) with Pelican
+https://www.zufallsheld.de/2014/05/11/serving-static-content-and-comments-with-pelican/
+
+# setting up pelican on pythonanywhere
+http://www.lesinskis.com/pelican_on_pythonanywhere.html
+
+
+
+
+
