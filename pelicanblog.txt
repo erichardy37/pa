@@ -206,6 +206,8 @@ git config —-global core.safecrlf false
 # added 07/21/2016
 cd pa
 git pull
+cd pblog
+pelican content -s pelicanconf.py
 
 
 
