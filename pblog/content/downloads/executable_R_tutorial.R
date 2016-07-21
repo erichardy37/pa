@@ -193,6 +193,7 @@ names(d)
 d$age > 8
 # test for missing values
 is.na(d$gender)
+
 any(is.na(d$age))
 # view a subset of the rows
 d[d$age > 8 & d$gender == 'female', ]
@@ -261,9 +262,10 @@ jiggle <- function(x) {
   return(x.jiggle)
 }
 
-dummy.jiggle <- paste0(dummy, '.jiggle')
+
 
 # create jiggled dummy variables, 
+dummy.jiggle <- paste0(dummy, '.jiggle')
 d[dummy.jiggle] <- lapply(d[, dummy.2], jiggle)
 # equivalently
 d[dummy.jiggle] <- lapply(d[, dummy.2], function(x) sapply(x, function(y) y + rnorm(1, sd=.1)))
