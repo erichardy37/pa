@@ -12,7 +12,7 @@
 # - data analysis
 # - graphing
 # - tables out to excel or latex
-#// - web scraping
+# - web scraping/apis
 
 # In this tutorial:
 # Basics: import data (package 'foreign'), browse dataset (subset, head, View, str()), create variables, [commands to explore data]
