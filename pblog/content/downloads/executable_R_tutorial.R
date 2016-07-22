@@ -271,7 +271,9 @@ d[, grep('dummy.', names(d))]
 
 # apply function to all dummy variables
 dummy <- grep('dummy.', names(d), value=TRUE)
+dummy
 dummy.2 <- paste0(dummy, '.2')
+dummy.2
 
 # multiply all existing dummy variables by 2
 # notice that the function of multiplying by 2 is implicitly defined in the apply statement
@@ -289,13 +291,17 @@ dummy.jiggle <- paste0(dummy, '.jiggle')
 d[dummy.jiggle] <- lapply(d[, dummy.2], jiggle)
 # equivalently
 d[dummy.jiggle] <- lapply(d[, dummy.2], function(x) sapply(x, function(y) y + rnorm(1, sd=.1)))
+# view all dummy.2 and dummy.jiggle columns
+d[, grep('2$|jiggle$', names(d))]
 
 # delete all 'jiggle' dummy variables
 # '.' is a special regex character; \\. tells the regex engine to match a text '.'
 d[, grep('\\.jiggle$', names(d))] <- NULL
 # delete all '.2$' dummy variables, and 'young.male'
-d[, grep('2$', names(d))] <- NULL
-d$young.male <- NULL
+d[, grep('2$|young.male', names(d))] <- NULL
+d
+
+
 
 ##########
 # dplyr
