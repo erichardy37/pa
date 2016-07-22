@@ -206,14 +206,15 @@ d[d$gender=='female', c('group', 'age')]
 # this 'base R' rbind() command will only work on data.frames with the same number of columns.
 # this can be done more efficiently and flexibly for large datasets using the bind_rows() command from dplyr
 d <- rbind(d, d.group.d)
-  
+d
+
 # merge the 'color' variable onto data for the four groups
 # this can be done more efficiently and using sql merging concepts using the 'join' commands from dplyr
 # in merge syntax, 'd' is the 'x' dataset; 'd.color' is the 'y' dataset
 # by default, only elements appearing in both datasets would be kept in the merged dataset
 # indicating all.x=TRUE puts all elements originally in 'd' into the merged dataset
 d <- merge(d, d.color, by=c('group', 'gender'), all.x=TRUE)
-
+d
 
 # view the number of observations by characteristic
 table(d$group)
@@ -261,8 +262,6 @@ jiggle <- function(x) {
   x.jiggle <- sapply(x, function(y) y + rnorm(1, sd=.1))
   return(x.jiggle)
 }
-
-
 
 # create jiggled dummy variables, 
 dummy.jiggle <- paste0(dummy, '.jiggle')
