@@ -1,50 +1,59 @@
 # R Tutorial
 
-# This tutorial provides an overview of R's basic data manipulation functionality
+# This tutorial provides an overview of basic data manipulation in R
 # This is an executable R file; run it in R to better understand what it does.
+
+# Advanced R by Hadley Wickham is a great resource
+# http://adv-r.had.co.nz/
 # for all the gory details, see the R language definition:
 # https://cran.r-project.org/doc/manuals/r-release/R-lang.pdf
-# advanced R by Hadley Wickham is a great resource
-# http://adv-r.had.co.nz/
+# for Stata users who want to replicate Stata's flexible macros in R:
+# http://www.r-bloggers.com/giving-r-the-strengths-of-stata/
 
 # Use R for:
 # - data manipulation
 # - data analysis
 # - graphing
-# - tables out to excel or latex
+# - tables out to latex
 # - web scraping/apis
 
 # In this tutorial:
-# Basics: import data (package 'foreign'), browse dataset (subset, head, View, str()), create variables, [commands to explore data]
-# functions, apply statements
-# dplyr: pipes, merge/append, grouped operations, etc.
-# regression
-# tables to latex
-# graphing: ggplot2
+# - import data (package 'foreign'), 
+# - browse dataset (subset, head, View, str())
+# - create new variables 
+# - explore data
+# - functions and apply statements
+# - dplyr: pipes, merge/append, grouped operations, etc.
+# - regression
+# - tables to latex
+# - graphing: ggplot2
 
 # Properties of R
-# "functional" programming language: ideally little or no "state", vectorized code
-# there are many ways to do the same thing; this makes R flexible but difficult to learn
-# the period "." is not an operator, and is often used in object names.  ex: data.frame
+# - "functional" programming language: ideally little or no "state", vectorized code
+# - there are many ways to do the same thing; this makes R flexible but difficult to learn
+# - the period "." is not an operator, and is often used in object names.  ex: data.frame
 
 # Finding help
-# if you know the command name, type "?command.name" at the R prompt
-# if you know the approximate command name, type "?approximate.command.name" at the R prompt
-# when using google, include "+R" in your search query to return results containing the string "R"
-# ex: viewing documentation for the 'tidyr' package, which can be used to reshape datasets
-# google: "+R CRAN tidyr"; click the first link: "CRAN - Package tidyr" for the package overview
-# "Reference manual: tidyr.pdf" includes descriptions for all commands in the package
-# "Vignettes: Tidy data" providex examples of how to use the package
+# - if you know the command name, type "?command.name" at the R prompt
+# - if you know the approximate command name, type "??approximate.command.name" at the R prompt
+# - when using google, include "+R" in your search query to return results containing the string "R"
+# - ex: viewing documentation for the 'tidyr' package, which can be used to reshape datasets
+# - google: "+R CRAN tidyr"; click the first link: "CRAN - Package tidyr" [1] for the package overview
+#     [1] https://cran.r-project.org/web/packages/tidyr/index.html
+# - "Reference manual: tidyr.pdf" [2] includes descriptions for all commands in the package
+#     [2] https://cran.r-project.org/web/packages/tidyr/tidyr.pdf
+# - "Vignettes: Tidy data" providex examples of how to use the package
+#     [3] https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html
 
-# Installing packages
-# to install, type install.packages('package.name') at the R prompt ">"
-# ex: install.packages('dplyr')
-# once installed, these packages can be loaded by typing "require('package.name')"
-# ex: require('dplyr')
+# Installing Packages
+# - to install, type install.packages('package.name') at the R prompt ">"
+# - ex: install.packages('dplyr')
+# - once installed, these packages can be loaded by typing "require('package.name')"
+# - ex: require('dplyr')
 
 # Miscellaneous
 # - There are no block comments in R.  
-# - Highlight a block of code and press "control-shift-c" to comment out the whole thing
+# - Highlight a block of code and press "Ctrl-Shift-c" to comment out the whole thing
 # - in Rstudio, run a block of code by highlighting it and pressing Cmd-Return (Mac) or Ctrl-Return (Windows and Linux) 
 # - in Rstudio, to run the entire program, press Cmd-Shift-Return (Mac) or Ctrl-Shift-Return (Windows and Linux)
 
@@ -67,7 +76,7 @@ rm(list=ls())
 # install.packages('case.sensitive.package.name')
 
 # load any required packages 
-# if these packages are not installed on your system, you can download them using install.packages()
+# if they are not installed, download them using install.packages()
 require(dplyr)
 require(tidyr)
 require(ggplot2)
@@ -78,9 +87,11 @@ getwd()
 # to change working directory 
 # setwd('~/your/file/path/here')
 
-# a vector is an array of elements that are all the same type (eg numeric, string, logical)
+# a vector is an array of elements that are all the same class
+# (eg numeric, string, logical)
 # create a vector, v
 v <- c(1,2,3,4,5)
+class(v)
 # view v, the first element of v, and the first three elements of v
 # multiple commands on the same line can be separated by a semicolon
 v; v[1]; v[1:3]
@@ -98,23 +109,29 @@ v.a <- rep(0, 10)
 # concatenate v and v.a
 # objects of the same type can be concatenated with the c() command.  Notice that v was originally defined this way.
 v.concatenated <- c(v, v.a)
+v.concatenated
 
 # objects of different types can be combined as a list
 # in this case, a numeric vector, a string vector, and a logical type
 list.a <- list(v, c('stuff', 'and', 'nonsense'), TRUE)
 # notice that list.a[2] returns a list, whereas list.a[[2]] returns the contents of the 2nd element (a vector)
-list.a; list.a[2]; list.a[[2]]; list.a[[2]][3]
-# to see the "structure" of the object
+list.a; 
+list.a[2] 
+list.a[[2]]
+list.a[[2]][3]
+
+# View the "structure" of the object
 str(list.a)
 
 # create another list
 list.b <- list(c('other stuff'), FALSE)
 
-# we can make a list of lists
+# Make a list of lists
 list.c <- list(list.a, list.b)
-# or concatenate the two lists into a third list
+str(list.c)
+# Concatenate the two lists into a longer list
 list.d <- c(list.a, list.b)
-str(list.c); str(list.d)
+str(list.d)
 
 # regular expressions are for pattern matching in strings
 # regular expressions are an extensive topic in their own right
@@ -125,7 +142,7 @@ animal.names <- c('ant', 'bear', 'cat', 'dog', 'deer')
 grep('^d', animal.names, value=TRUE)
 # return a vector indicating whether the animal name ends with the letter 't'
 grepl('t$', animal.names)
-# return all animal names that contain a or e
+# return all animal names that contain 'a' or 'e'
 grep('a|e', animal.names, value=TRUE)
 
 # "apply" statements apply a function to each element of a vector or list, and return a vector or list of results
@@ -171,8 +188,10 @@ d.color <- data.frame(group=c('a', 'a', 'b', 'b', 'c', 'c', 'd'),
 # instead it will have two strings 'male' and 'female', and associate these with factors 1 and 2.  
 # this can save memory, but the datasets in this tutorial are too small to bother
 
-# view the dataset
+# view the dataset in the console
 d
+# datasets can also be viewed in the dataset viewer
+View(d)
 # view the first 6 (by default) rows of the dataset
 head(d)
 # view the first two rows of the dataset
@@ -193,7 +212,6 @@ names(d)
 d$age > 8
 # test for missing values
 is.na(d$gender)
-
 any(is.na(d$age))
 # view a subset of the rows
 d[d$age > 8 & d$gender == 'female', ]
@@ -204,12 +222,12 @@ d[d$gender=='female', c('group', 'age')]
 
 # append the observations for group d to the 'd' data.frame
 # this 'base R' rbind() command will only work on data.frames with the same number of columns.
-# this can be done more efficiently and flexibly for large datasets using the bind_rows() command from dplyr
+# this can be done efficiently and flexibly for large datasets using bind_rows() from dplyr
 d <- rbind(d, d.group.d)
 d
 
 # merge the 'color' variable onto data for the four groups
-# this can be done more efficiently and using sql merging concepts using the 'join' commands from dplyr
+# this can be done efficiently using sql merging concepts with the 'join' commands from dplyr
 # in merge syntax, 'd' is the 'x' dataset; 'd.color' is the 'y' dataset
 # by default, only elements appearing in both datasets would be kept in the merged dataset
 # indicating all.x=TRUE puts all elements originally in 'd' into the merged dataset
@@ -227,11 +245,12 @@ with(d[d$age >=7, ], table(group, gender))
 table(d$group, d$gender, useNA=c('ifany'))
 
 # save the frequency data from the table as a data.frame
-d.table <- as.data.frame(table(d$group, d$gender, useNA=c('ifany')), stringsAsFactors=FALSE)
+d.table <- as.data.frame(table(d$group, d$gender, useNA=c('ifany')), 
+                         stringsAsFactors=FALSE)
 d.table
 # rename columns in d.table
 names(d.table) <- c('group', 'gender', 'freq')
-# 'reshape' the data back to the format seen in the onscreen table with a command from package tidyr
+# 'reshape' the data back to the format seen in the onscreen table with spread() from tidyr
 d.table.spread <- spread(d.table, gender, freq)
 d.table.spread
 
@@ -242,7 +261,9 @@ d$young.male <- ifelse(d$age < 10 & d$gender=='male', 'young.male', 'not.young.m
 # to create a dummy variable for each category in 'group':
 # first, select unique elements in d$group
 cols <- unique(d$group)
-# second, assign 
+cols
+# second, for each element in cols test whether each observation in d$group 
+# is equal to the element, and return the resulting vector
 d[paste0('dummy.', cols)] <- lapply(cols, function(col) as.numeric(d$group==col))
 
 # to refer only to dummy variables
@@ -279,7 +300,7 @@ d$young.male <- NULL
 ##########
 # dplyr
 
-# dplyr is a package used to perform advanced data manipulation on data.frame like objects.
+# dplyr is a package used to perform advanced data manipulation on data.frame-like objects.
 # dplyr contains many functions that take a data.frame as input, and return a data.frame as output
 # dplyr cheat sheet: https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
 
@@ -302,11 +323,12 @@ d.ranks <- d %>%
          age.rank=dense_rank(-age))
 
 # find the second oldest person in each group
-# notice that d.ranks retains its group_by() attributes from above; there is no need to run group_by() again
+# notice that d.ranks retains its group_by() attributes from above 
+# there is no need to run group_by() again
 d.ranks <- d.ranks %>%
   mutate(age.2ndoldest = max(ifelse(age.rank==(num.people-1), age, 0)))
 
-# notice that d.ranks has inherited characteristics of a data.frame, but now has more 
+# notice that d.ranks has inherited characteristics of a data.frame, but now has additional characteristics 
 # to group by multiple groups (group and gender, for example), type "group_by(group, gender)"
 d.ranks
 str(d.ranks)
